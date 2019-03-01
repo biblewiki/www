@@ -1,6 +1,6 @@
 <?php
 
-include '/home/mwepf1gm/www/biblewiki.one/config/biblewiki_bottoken.php';
+require_once ('/home/mwepf1gm/www/biblewiki.one/config/biblewiki_bottoken.php');
 
 function checkTelegramAuthorization($auth_data) {
   $check_hash = $auth_data['hash'];
