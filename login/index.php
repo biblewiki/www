@@ -8,19 +8,31 @@ function getTelegramUserData() {
   }
   return false;
 }
+function getUserData() {
+  if (isset($_COOKIE['user'])) {
+    $user_data_json = urldecode($_COOKIE['user']);
+    $user_data = json_decode($user_data_json, true);
+    return $user_data;
+  }
+  return false;
+}
 if ($_GET['logout']) {
   setcookie('tg_user', '');
   header('Location: /login/');
 }
 $tg_user = getTelegramUserData();
+$user = getUserData();
+
 if ($tg_user !== false) {
+  $username = htmlspecialchars($user['user_username']);
   $first_name = htmlspecialchars($tg_user['first_name']);
   $last_name = htmlspecialchars($tg_user['last_name']);
+
   if (isset($tg_user['username'])) {
-    $username = htmlspecialchars($tg_user['username']);
-    $html = "<h1>Hello, <a href=\"https://t.me/{$username}\">{$first_name} {$last_name}</a>!</h1>";
+    $tg_username = htmlspecialchars($tg_user['username']);
+    $html = "<h1>Hello, <a href=\"https://t.me/{$tg_username}\">{$first_name} {$last_name} {$username}</a>!</h1>";
   } else {
-    $html = "<h1>Hello, {$first_name} {$last_name}!</h1>";
+    $html = "<h1>Hello, {$first_name} {$last_name} {$username}!</h1>";
   }
   if (isset($tg_user['photo_url'])) {
     $photo_url = htmlspecialchars($tg_user['photo_url']);
@@ -42,13 +54,26 @@ echo <<<HTML
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Login - BibleWiki</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap start -->
+      <title>Login Biblewiki</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Bootstrap stop -->
+    
     <!--link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script-->
 </head>
 <body>
+  <div class="container">
     <h1>Login</h1>
     <p>Is being implemented</p>
     <center>{$html}</center>
+  </div>
 </body>
 </html>
 HTML;
