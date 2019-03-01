@@ -42,7 +42,7 @@ if ($tg_user !== false) {
 } else {
   $bot_username = BOT_USERNAME;
   $html = <<<HTML
-<h1>Hello, anonymous!</h1>
+<h1>Hello, please LOGIN!</h1>
 <script async src="https://telegram.org/js/telegram-widget.js?2" data-telegram-login="{$bot_username}" data-size="large" data-auth-url="check_authorization.php"></script>
 HTML;
 }
@@ -73,6 +73,14 @@ echo <<<HTML
     <h1>Login</h1>
     <p>Is being implemented</p>
     <center>{$html}</center>
+    <center>
+      <form action="check_mysql.php?web=1" method="post">
+        <input type="text" name="username" placeholder="Username"><br><br>
+        <input type="password" name="password" placeholder="Password"><br><br>
+        <input type="submit" value="Login"><br>
+
+      </form>   
+    </center>
   </div>
 </body>
 </html>

@@ -35,6 +35,6 @@ try {
   die ($e->getMessage());
 }
 
-header('Location: /login/check_mysql.php');
+header('Location: /login/check_mysql.php?telegram=1');
 
 ?>
