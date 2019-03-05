@@ -54,14 +54,39 @@ echo <<<HTML
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Login - BibleWiki</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" />
+
     <link href="style.css" rel="stylesheet" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="script.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    
+
+    <!--script src="script.js"></script-->
+    <script>
+$(function () {
+    $('#error').click(function () {
+        // make it not dissappear
+        toastr.error("Noooo oo oo ooooo!!!", "Title", {
+            "timeOut": "0",
+            "extendedTImeout": "0"
+        });
+    });
+    $('#info').click(function () {
+   		// title is optional
+        toastr.info("Info Message", "Title");
+        toastr.options.positionClass = 'toast-top-right';
+    });
+    $('#warning').click(function () {
+        toastr.warning("Warning");
+    });
+    $('#success').click(function () {
+        toastr.success("YYEESSSSSSS");
+    });
+});
+    </script>
 
     <!-- Bootstrap start -->
       <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
@@ -86,7 +111,10 @@ echo <<<HTML
     </center>
 
     <button class="btn btn-primary" id="tryMe">Try Me</button>        
-
+    <input type="button" value="Error" id="error" />
+<input type="button" value="Info" id="info" />
+<input type="button" value="Warning" id="warning" />
+<input type="button" value="Success" id="success" />
 
   </div>
 </body>
