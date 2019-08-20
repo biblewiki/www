@@ -28,5 +28,5 @@ if (isset($_SESSION["loggedin"]) && isset($_COOKIE["LOGGEDIN"]) && $_SESSION["lo
 
     // Sessionfehler
 } else {
-    header('Location: ' . LOGIN_HOST . '/logout.php?notif=session_fail');
+    header('Location: ' . LOGIN_HOST . '/logout.php?notif=session_fail&type=error');
 }
