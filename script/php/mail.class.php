@@ -4,6 +4,12 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
+// User DB Script einbinden
+require_once SCRIPT_PATH . '/php/db_user.php';
+
+// SMTP Logindaten einbinden
+require_once HOME_DIR . '/config/biblewiki/smtp_mailserver.php';
+
 /* Namespace alias. */
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -22,6 +28,20 @@ class mail
     ######################################################
     # SET
     ######################################################
+
+    function set_to_userID($toID)
+    {
+        $this->toID = $toID;
+
+        $columns = array('user_firstname', 'user_lastname', 'user_email');
+
+        $userData = GetData($this->toID, USER_DB, 'users', $columns);
+
+        if (is_array($userData)) {
+            $this->toEmail = $userData['user_email'];
+            $this->toName = $userData['user_firstname'] . ' ' . $userData['user_lastname'];
+        }
+    }
 
     function set_to_email($toEmail)
     {
@@ -162,7 +182,7 @@ function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, 
         $mail->Username = 'webmaster@biblewiki.one';
 
         /* SMTP authentication password. */
-        $mail->Password = 'yQq4KE8n';
+        $mail->Password = 'CL4XJdwR';
 
         /* Set the SMTP port. */
         $mail->Port = 587;
@@ -172,7 +192,7 @@ function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, 
         /* Finally send the mail. */
         $mail->send();
 
-         return('success');
+        return ('success');
     } catch (Exception $e) {
         /* PHPMailer exception. */
         return $e->errorMessage();
