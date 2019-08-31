@@ -4,11 +4,13 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
+// SMTP Logindaten einbinden
+require_once HOME_DIR . '/config/biblewiki/smtp_mailserver.php';
+
 // User DB Script einbinden
 require_once SCRIPT_PATH . '/php/db_user.php';
 
-// SMTP Logindaten einbinden
-require_once HOME_DIR . '/config/biblewiki/smtp_mailserver.php';
+
 
 /* Namespace alias. */
 
@@ -21,9 +23,8 @@ class mail
 
     // Standardwerte
 
-    var $fromEmail = 'no-reply@biblewiki.one';
-    var $fromName = 'BibleWiki';
     var $attachment = NULL;
+    var $template = 'html_email_template.php';
 
     ######################################################
     # SET
@@ -73,60 +74,61 @@ class mail
         $this->attachment = $attachment;
     }
 
-    function set_body($body)
+    function set_title($title)
     {
-        $this->body = $body;
+        $this->title = $title;
+    }
+    function set_preheader($preheader)
+    {
+        $this->preheader = $preheader;
     }
 
-    ######################################################
-    # GET
-    ######################################################
-
-    function get_to_email()
+    function set_heading($heading)
     {
-        return $this->toEmail;
+        $this->heading = $heading;
     }
 
-    function get_to_name()
+    function set_text($text)
     {
-        return $this->toName;
+        $this->text = $text;
     }
 
-    function get_from_email()
+    function set_button_text($button_text)
     {
-        return  $this->fromEmail;
+        $this->button_text = $button_text;
     }
 
-    function get_from_name()
+    function set_button_link($button_link)
     {
-        return $this->fromName;
+        $this->button_link = $button_link;
     }
 
-    function get_subject()
+    function set_end_text($end_text)
     {
-        return $this->subject;
+        $this->end_text = $end_text;
     }
 
-    function get_attachment()
-    {
-        return $this->attachment;
-    }
-
-    function get_body()
-    {
-        return $this->body;
-    }
 
 
     function send_mail()
     {
-        return email($this->toEmail, $this->toName, $this->fromEmail, $this->fromName, $this->subject, $this->attachment, $this->body);
+        // HTML Email Template einbinden
+        require_once SCRIPT_PATH . '/php/lib/'.$this->template;
+
+        // Email senden
+        return email($this->toEmail, $this->toName, $this->fromEmail, $this->fromName, $this->subject, $this->attachment, $html_template);
     }
 }
 
 function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, $body)
 {
-    //$userData = GetReceiverData($toUserID);
+    if (!isset($fromName) || $fromName === ''){
+        $fromName = FROM_NAME;
+    }
+
+    if (!isset($fromEmail) || $fromEmail === ''){
+        $fromEmail = FROM_EMAIL;
+    }
 
     /* Create a new PHPMailer object. Passing TRUE to the constructor enables exceptions. */
     $mail = new PHPMailer(TRUE);
@@ -170,7 +172,7 @@ function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, 
         $mail->isSMTP();
 
         /* SMTP server address. */
-        $mail->Host = 'asmtp.mail.hostpoint.ch';
+        $mail->Host = SMTP_HOST;
 
         /* Use SMTP authentication. */
         $mail->SMTPAuth = TRUE;
@@ -179,13 +181,13 @@ function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, 
         $mail->SMTPSecure = 'tls';
 
         /* SMTP authentication username. */
-        $mail->Username = 'webmaster@biblewiki.one';
+        $mail->Username = SMTP_USER;
 
         /* SMTP authentication password. */
-        $mail->Password = 'CL4XJdwR';
+        $mail->Password = SMTP_PW;
 
         /* Set the SMTP port. */
-        $mail->Port = 587;
+        $mail->Port = SMTP_PORT;
 
 
 
@@ -201,3 +203,4 @@ function email($toEmail, $toName, $fromEmail, $fromName, $subject, $attachment, 
         return $e->getMessage();
     }
 }
+

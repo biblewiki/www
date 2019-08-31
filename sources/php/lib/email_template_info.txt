@@ -1,0 +1,17 @@
+Nötige Variablen
+
+// Preheader. Dieser wird in der Emailübersicht angezeigt.
+$email_preheader
+
+// Header. Die Überschrift in der Email
+$email_heading
+
+// Einleitender Text
+$mail_intro
+
+// Button
+$mail_button_text
+$mail_button_link
+
+// Schlusstext
+$mail_text
